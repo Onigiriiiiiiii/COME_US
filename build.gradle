@@ -133,7 +133,7 @@ sourceSets {
     main.java.srcDir querydslDir
 }
 
-// 여기부터는 Gradle 5.0 이후로 추가 작성
+
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
@@ -154,9 +154,9 @@ jacocoTestReport {
     executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
     reports {
-        html.enabled true
-        xml.enabled true
-        csv.enabled false
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
     }
     def Qdomains = []
     for (qPattern in '**/QA'..'**/QZ') {
