@@ -1,7 +1,7 @@
 package com.platform.order.authentication.controller;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;

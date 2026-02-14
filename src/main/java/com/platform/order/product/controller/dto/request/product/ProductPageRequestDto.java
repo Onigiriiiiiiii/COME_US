@@ -2,8 +2,8 @@ package com.platform.order.product.controller.dto.request.product;
 
 import java.util.List;
 
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

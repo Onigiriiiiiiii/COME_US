@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,8 +23,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.MultiValueMap;
@@ -61,7 +61,7 @@ class ProductControllerTest extends ControllerTest {
 	final Long productId = 1L;
 	final Long authId = 1L;
 
-	@MockBean
+	@MockitoBean
 	ProductService productService;
 
 	ParameterUtils<ProductPageRequestDto> paramUtils = new ParameterUtils<ProductPageRequestDto>();

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.platform.order.product.controller.dto.request.product.CreateProductRequestDto;
 import com.platform.order.product.controller.dto.request.product.UpdateProductRequestDto;
@@ -39,6 +40,8 @@ public class ProductIntegrationTest extends IntegrationTest {
 	ProductRepository productRepository;
 	@Autowired
 	UserProductRepository userProductRepository;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 
 	UserEntity user;
 	CategoryEntity category;
@@ -84,10 +87,12 @@ public class ProductIntegrationTest extends IntegrationTest {
 
 	@AfterEach
 	public void finalSetUp() {
-		userProductRepository.deleteAllInBatch();
-		productRepository.deleteAllInBatch();
-		categoryRepository.deleteAllInBatch();
-		userRepository.deleteAllInBatch();
+		jdbcTemplate.update("delete from user_product");
+		jdbcTemplate.update("delete from product_image");
+		jdbcTemplate.update("delete from product");
+		jdbcTemplate.update("delete from product_thunmnail_image");
+		jdbcTemplate.update("delete from category");
+		jdbcTemplate.update("delete from users");
 	}
 
 	@Test

@@ -1,21 +1,30 @@
-buildscript {
-    ext {
-        queryDslVersion = "5.0.0"
-    }
-}
-
 plugins {
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'org.springframework.boot' version '4.0.3'
     id 'java'
-    id "org.flywaydb.flyway" version "6.2.4"
+    id 'org.flywaydb.flyway' version '12.1.0'
     id 'jacoco'
 }
 
 group = 'com.platform'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+
+ext {
+    awsSdkVersion = '2.39.6'
+    jacocoVersion = '0.8.14'
+    jasyptVersion = '3.0.5'
+    lombokVersion = '1.18.44'
+    queryDslVersion = '5.1.0'
+    redissonVersion = '3.52.0'
+    shedlockVersion = '7.2.2'
+    springdocVersion = '3.0.1'
+    testcontainersVersion = '1.21.3'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 configurations {
     compileOnly {
@@ -28,90 +37,67 @@ repositories {
 }
 
 jacoco {
-    toolVersion = '0.8.8'
+    toolVersion = jacocoVersion
 }
 
 dependencies {
-    // Web
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    annotationProcessor platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    developmentOnly platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    runtimeOnly platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    testImplementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-aspectj'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-jackson'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    //SECURITY
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // OAUTH2
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-    // JWT
+    implementation 'org.apache.commons:commons-lang3'
     implementation 'com.auth0:java-jwt:3.18.1'
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+    implementation "net.javacrumbs.shedlock:shedlock-provider-jdbc-template:${shedlockVersion}"
+    implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockVersion}"
+    implementation "org.redisson:redisson:${redissonVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation platform("software.amazon.awssdk:bom:${awsSdkVersion}")
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'net.datafaker:datafaker:1.9.0'
 
-    // OAUTH
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-    // VALIDATION
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    // JPA
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // QUERYDSL
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-
-    // MYSQL
-    implementation 'mysql:mysql-connector-java:8.0.28'
-
-    // REDIS
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.redisson:redisson-spring-boot-starter:3.17.4'
-
-    // LOMBOK
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    // ANNOTATION PROCESSOR
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    // APACHE
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
-
-    // AWS
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
-    //TEST
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'com.h2database:h2'
-
-    // MYSQL TEST CONTAINER
-    testImplementation "org.testcontainers:mysql:1.17.5"
-    testImplementation "org.testcontainers:junit-jupiter:1.17.5"
-    testImplementation "com.redis.testcontainers:testcontainers-redis-junit:1.6.2"
-
-    // SWAGGER
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-    implementation 'org.springdoc:springdoc-openapi-security:1.6.9'
-
-    // LOCALSTACK
-    testImplementation "org.testcontainers:localstack:1.16.3"
-
-    // JASYPT
-    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
-
-    // Flyway
-    implementation "org.flywaydb:flyway-mysql"
-    implementation 'org.flywaydb:flyway-core:7.15.0'
-    testImplementation 'org.flywaydb.flyway-test-extensions:flyway-spring-test:7.0.0'
-
-    // Prometheus
+    runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
-    // ShedLock
-    implementation 'net.javacrumbs.shedlock:shedlock-spring:5.2.0'
-    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
 
-    // FAKER
-    implementation 'net.datafaker:datafaker:1.9.0'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test-classic'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:localstack:${testcontainersVersion}"
+    testImplementation "org.testcontainers:mysql:${testcontainersVersion}"
+    testImplementation 'com.h2database:h2'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-parameters']
 }
 
 tasks.named('test') {
@@ -123,33 +109,6 @@ flyway {
     configFiles = ['flyway.conf']
 }
 
-def querydslDir = "$buildDir/generated/querydsl"
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-sourceSets {
-    main.java.srcDir querydslDir
-}
-
-
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
-
-// jacoco
-test {
-    finalizedBy(jacocoTestReport)
-}
-
 jacocoTestReport {
     executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
@@ -158,39 +117,41 @@ jacocoTestReport {
         xml.required.set(true)
         csv.required.set(false)
     }
-    def Qdomains = []
+
+    def qDomains = []
     for (qPattern in '**/QA'..'**/QZ') {
-        Qdomains.add(qPattern + '*')
+        qDomains.add(qPattern + '*')
     }
 
     afterEvaluate {
         classDirectories.setFrom(
-                files(classDirectories.files.collect {
-                    fileTree(dir: it, excludes: [
-                            "**/*config*",
-                            "**/*dto*",
-                            "**/*application*",
-                            "**/*request*",
-                            "**/*response*",
-                            "**/*exception*",
-                            "**/*security*",
-                            "**/*Mapper*",
-                            "**/*validation*",
-                            "**/*superentity*",
-                            "**/*utils*",
-                            "**/*aop*",
-                            "**/*scheduler*"
-                    ] + Qdomains)
-                })
+            files(classDirectories.files.collect {
+                fileTree(dir: it, excludes: [
+                    "**/*config*",
+                    "**/*dto*",
+                    "**/*application*",
+                    "**/*request*",
+                    "**/*response*",
+                    "**/*exception*",
+                    "**/*security*",
+                    "**/*Mapper*",
+                    "**/*validation*",
+                    "**/*superentity*",
+                    "**/*utils*",
+                    "**/*aop*",
+                    "**/*scheduler*"
+                ] + qDomains)
+            })
         )
     }
+
     finalizedBy(jacocoTestCoverageVerification)
 }
 
 jacocoTestCoverageVerification {
-    def Qdomains = []
+    def qDomains = []
     for (qPattern in '*.QA'..'*.QZ') {
-        Qdomains.add(qPattern + '*')
+        qDomains.add(qPattern + '*')
     }
 
     violationRules {
@@ -209,14 +170,14 @@ jacocoTestCoverageVerification {
             }
 
             excludes = [
-                    "**.*config*",
-                    "**.*dto*",
-                    "**.*request*",
-                    "**.*response*",
-                    "**.*exception*",
-                    "**.*security*",
-                    "**.*property*"
-            ] + Qdomains
+                "**.*config*",
+                "**.*dto*",
+                "**.*request*",
+                "**.*response*",
+                "**.*exception*",
+                "**.*security*",
+                "**.*property*"
+            ] + qDomains
         }
     }
 }

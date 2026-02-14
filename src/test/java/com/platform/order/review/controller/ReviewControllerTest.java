@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -55,7 +55,7 @@ import com.platform.order.utils.ParameterUtils;
 class ReviewControllerTest extends ControllerTest {
 	final String URI_PREFIX = "/api/reviews";
 
-	@MockBean
+	@MockitoBean
 	ReviewService reviewService;
 
 	ResourceLoader resourceLoader = new DefaultResourceLoader();

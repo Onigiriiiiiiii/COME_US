@@ -2,7 +2,7 @@ package com.platform.order.authentication.controller.handler;
 
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;

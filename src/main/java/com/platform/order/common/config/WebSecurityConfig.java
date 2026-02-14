@@ -1,16 +1,18 @@
 package com.platform.order.common.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -29,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({SecurityUrlProperty.class, JwtProperty.class, CookieProperty.class})
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @EnableWebSecurity
 public class WebSecurityConfig {
 
@@ -41,13 +43,14 @@ public class WebSecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return web -> web.ignoring()
-			.antMatchers(HttpMethod.GET, this.getIgnoringUrl(HttpMethod.GET))
-			.antMatchers(HttpMethod.POST, this.getIgnoringUrl(HttpMethod.POST))
-			.antMatchers(HttpMethod.PATCH, this.getIgnoringUrl(HttpMethod.PATCH))
-			.antMatchers(HttpMethod.DELETE, this.getIgnoringUrl(HttpMethod.PUT))
-			.antMatchers(HttpMethod.PUT, this.getIgnoringUrl(HttpMethod.DELETE))
-			.requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+		return web -> {
+			WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
+			ignore(ignoring, HttpMethod.GET);
+			ignore(ignoring, HttpMethod.POST);
+			ignore(ignoring, HttpMethod.PATCH);
+			ignore(ignoring, HttpMethod.PUT);
+			ignore(ignoring, HttpMethod.DELETE);
+		};
 	}
 
 	@Bean
@@ -58,49 +61,61 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
-			.authorizeRequests()
-			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-			.antMatchers(HttpMethod.GET, this.securityUrlProperty.urlPatternConfig().permitAll().get("GET"))
-			.permitAll()
-			.antMatchers(HttpMethod.POST, this.securityUrlProperty.urlPatternConfig().permitAll().get("POST"))
-			.permitAll()
-			.antMatchers(HttpMethod.PATCH, this.securityUrlProperty.urlPatternConfig().permitAll().get("PATCH"))
-			.permitAll()
-			.antMatchers(HttpMethod.DELETE, this.securityUrlProperty.urlPatternConfig().permitAll().get("DELETE"))
-			.permitAll()
-			.antMatchers(HttpMethod.PUT, this.securityUrlProperty.urlPatternConfig().permitAll().get("PUT"))
-			.permitAll()
-			.antMatchers(HttpMethod.OPTIONS, this.securityUrlProperty.urlPatternConfig().permitAll().get("OPTIONS"))
-			.permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin().disable()
-			.csrf().disable()
-			.headers().disable()
-			.httpBasic().disable()
-			.rememberMe().disable()
-			.logout().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.exceptionHandling()
-			.authenticationEntryPoint(authenticationEntryPoint())
-			.and()
+			.authorizeHttpRequests(registry -> {
+				registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+				permitAll(registry, HttpMethod.GET);
+				permitAll(registry, HttpMethod.POST);
+				permitAll(registry, HttpMethod.PATCH);
+				permitAll(registry, HttpMethod.PUT);
+				permitAll(registry, HttpMethod.DELETE);
+				permitAll(registry, HttpMethod.OPTIONS);
+				registry.anyRequest().authenticated();
+			})
+			.formLogin(formLogin -> formLogin.disable())
+			.csrf(csrf -> csrf.disable())
+			.headers(headers -> headers.disable())
+			.httpBasic(httpBasic -> httpBasic.disable())
+			.rememberMe(rememberMe -> rememberMe.disable())
+			.logout(logout -> logout.disable())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.exceptionHandling(handling -> handling.authenticationEntryPoint(authenticationEntryPoint()))
 			.addFilterBefore(
 				new JwtAuthenticationFilter(jwtProviderManager, jwtProperty, cookieProperty),
 				UsernamePasswordAuthenticationFilter.class
 			)
-			.cors()
-			.and()
-			.oauth2Login()
-			.authorizationEndpoint()
-			.and()
-			.successHandler(oauth2AuthenticationSuccessHandler);
+			.cors(Customizer.withDefaults())
+			.oauth2Login(oauth2 -> oauth2.successHandler(oauth2AuthenticationSuccessHandler));
 
 		return httpSecurity.build();
 	}
 
+	private void ignore(WebSecurity.IgnoredRequestConfigurer ignoring, HttpMethod httpMethod) {
+		String[] urls = getIgnoringUrl(httpMethod);
+		if (urls.length > 0) {
+			ignoring.requestMatchers(httpMethod, urls);
+		}
+	}
+
+	private void permitAll(
+		AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry,
+		HttpMethod httpMethod
+	) {
+		String[] urls = getPermitAllUrl(httpMethod);
+		if (urls.length > 0) {
+			registry.requestMatchers(httpMethod, urls).permitAll();
+		}
+	}
+
 	private String[] getIgnoringUrl(HttpMethod httpMethod) {
-		return this.securityUrlProperty.urlPatternConfig().ignoring().get(httpMethod.name());
+		return getUrls(this.securityUrlProperty.urlPatternConfig().ignoring(), httpMethod);
+	}
+
+	private String[] getPermitAllUrl(HttpMethod httpMethod) {
+		return getUrls(this.securityUrlProperty.urlPatternConfig().permitAll(), httpMethod);
+	}
+
+	private String[] getUrls(java.util.Map<String, String[]> urls, HttpMethod httpMethod) {
+		String[] values = urls.get(httpMethod.name());
+		return values == null ? new String[0] : values;
 	}
 }
-

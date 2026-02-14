@@ -2,10 +2,10 @@ package com.platform.order.review.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

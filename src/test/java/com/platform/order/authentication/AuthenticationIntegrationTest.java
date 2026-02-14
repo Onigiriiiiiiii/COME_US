@@ -7,13 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.platform.order.authentication.controller.dto.request.LoginAuthRequestDto;
 import com.platform.order.common.security.JwtProviderManager;
 import com.platform.order.common.security.constant.JwtProperty;
@@ -45,8 +46,9 @@ class AuthenticationIntegrationTest extends IntegrationTest {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	@Autowired
-	ObjectMapper objectMapper;
+	ObjectMapper objectMapper = JsonMapper.builder()
+		.findAndAddModules()
+		.build();
 
 	@Autowired
 	JwtProviderManager jwtProviderManager;

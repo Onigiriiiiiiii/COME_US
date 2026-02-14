@@ -1,6 +1,6 @@
 package com.platform.order.testenv;
 
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import com.platform.order.config.TestJpaAuditConfig;

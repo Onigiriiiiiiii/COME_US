@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import com.platform.order.common.superentity.BaseEntity;
 import com.platform.order.order.domain.delivery.entity.DeliveryEntity;
@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Builder(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted=false")
 @Table(name = "orders")
 @Entity
 public class OrderEntity extends BaseEntity {

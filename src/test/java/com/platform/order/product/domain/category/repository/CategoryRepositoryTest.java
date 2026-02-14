@@ -2,7 +2,7 @@ package com.platform.order.product.domain.category.repository;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

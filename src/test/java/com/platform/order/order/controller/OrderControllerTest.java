@@ -19,8 +19,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.MultiValueMap;
 
@@ -52,7 +52,7 @@ import com.platform.order.utils.ParameterUtils;
 class OrderControllerTest extends ControllerTest {
 	final String URI_PREFIX = "/api/orders";
 
-	@MockBean
+	@MockitoBean
 	OrderService orderService;
 
 	Long buyingProductId = 1L;

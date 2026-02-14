@@ -17,7 +17,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -61,7 +61,11 @@ public class RedisConfig {
 				.fromSerializer(new StringRedisSerializer()))
 			.serializeValuesWith(RedisSerializationContext
 				.SerializationPair
-				.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+				.fromSerializer(GenericJacksonJsonRedisSerializer.create(serializerBuilder ->
+					serializerBuilder
+						.enableUnsafeDefaultTyping()
+						.enableSpringCacheNullValueSupport()
+				)));
 		Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
 
 		cacheConfiguration.put(RedisCacheKey.CATEGORIES.getCacheKey(),

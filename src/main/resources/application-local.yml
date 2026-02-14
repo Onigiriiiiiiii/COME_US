@@ -41,14 +41,14 @@ spring:
             scope: ${OAUTH_K_SCOPE:ENC(PsfJpQjmGnvIxNc3e1xm4mG3dVRRCVyjVkmTgqbe/CFDe8LpvsS9Iw==)}
             redirect-uri: "http://localhost:8080/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
-            client-authentication-method: POST
+            client-authentication-method: client_secret_post
           google:
-            clientName: google
+            client-name: google
             client-id: ${OAUTH_G_CLIENT_ID:ENC(OlZ/Is3+3/d8aXfTRM5QYnpb+yd0823hnXmHuCEC+6FZ6/1+w2nzA5N85A31anQHpW+PV7T3V+fmYuaMgLn0X0GDr6CLIybO9rh+kTNcwJeTzzZ7zu80Qg==)}
             client-secret: ${OAUTH_G_CLIENT_SECRET:ENC(aSrh5NznQMNcb6bhuoPmf+cmHVnUWAHSpQ3Ej3zQs7OGEN+S+QHeuFtslt6gjr6K)}
             scope: ${OAUTH_G_SCOPE:ENC(8PN/+m11hRReX5PlOYATVqsUslgXgkiI)}
             redirect-uri: "http://localhost:8080/login/oauth2/code/{registrationId}"
-            client-authentication-method: POST
+            client-authentication-method: client_secret_post
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -60,12 +60,13 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
-  redis:
-    cluster:
-      nodes:
-        - ${REDIS_HOST1:localhost}:6379
-        - ${REDIS_HOST2:localhost}:6380
-        - ${REDIS_HOST3:localhost}:6381
+  data:
+    redis:
+      cluster:
+        nodes:
+          - ${REDIS_HOST1:localhost}:6379
+          - ${REDIS_HOST2:localhost}:6380
+          - ${REDIS_HOST3:localhost}:6381
 
 jwt:
   issuer: come-us

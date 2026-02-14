@@ -1,8 +1,8 @@
 package com.platform.order.coupon.controller;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package com.platform.order.user.controller.dto.request;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import com.platform.order.user.domain.entity.Role;
 

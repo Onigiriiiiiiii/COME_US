@@ -2,14 +2,14 @@ package com.platform.order.product.domain.product.entity;
 
 import static java.text.MessageFormat.format;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import com.platform.order.common.exception.custom.BusinessException;
 import com.platform.order.common.exception.model.ErrorCode;
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "deleted=false AND is_display=true")
+@SQLRestriction("deleted=false AND is_display=true")
 @Table(name = "product")
 @Entity
 public class ProductEntity extends BaseEntity {

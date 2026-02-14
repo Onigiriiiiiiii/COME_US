@@ -1,6 +1,6 @@
 package com.platform.order.authentication.controller.dto.request;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

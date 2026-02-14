@@ -1,12 +1,12 @@
 package com.platform.order.user.domain.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import com.platform.order.common.superentity.BaseEntity;
 
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted=false")
 @Table(name = "users")
 @Entity
 public class UserEntity extends BaseEntity {
@@ -40,5 +40,4 @@ public class UserEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 }
-
 

@@ -1,6 +1,6 @@
 package com.platform.order.common.exception;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,8 +2,8 @@ package com.platform.order.common.config;
 
 import java.util.Arrays;
 
-import org.springdoc.core.SpringDocUtils;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class SwaggerConfig {
 	@Bean
-	public OpenApiCustomiser customOpenApi() {
+	public OpenApiCustomizer customOpenApi() {
 		SpringDocUtils.getConfig().addAnnotationsToIgnore(AuthenticationPrincipal.class);
 
 		return openApi -> {

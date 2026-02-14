@@ -2,9 +2,9 @@ package com.platform.order.coupon.controller.dto.request.coupon;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import com.platform.order.coupon.domain.coupon.entity.CouponType;
 

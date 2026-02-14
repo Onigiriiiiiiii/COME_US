@@ -13,7 +13,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.platform.order.testenv.IntegrationTest;
 
 class AwsStorageServiceTest extends IntegrationTest {
@@ -23,9 +22,6 @@ class AwsStorageServiceTest extends IntegrationTest {
 
 	@Autowired
 	ResourceLoader resourceLoader;
-
-	@Autowired
-	AmazonS3 amazonS3;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;

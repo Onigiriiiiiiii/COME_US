@@ -19,7 +19,7 @@ public class IntegrationTest {
 
 	static {
 		redis.start();
-		System.setProperty("spring.redis.host", redis.getHost());
-		System.setProperty("spring.redis.port", redis.getMappedPort(6379).toString());
+		System.setProperty("spring.data.redis.host", redis.getHost());
+		System.setProperty("spring.data.redis.port", redis.getMappedPort(6379).toString());
 	}
 }

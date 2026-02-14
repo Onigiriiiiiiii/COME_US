@@ -1,9 +1,9 @@
 package com.platform.order.order.controller;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;

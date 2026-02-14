@@ -2,14 +2,14 @@ package com.platform.order.coupon.domain.coupon.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import com.platform.order.common.superentity.BaseEntity;
 import com.platform.order.coupon.domain.usercoupon.entity.Calculable;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted=false")
 @Table(name = "coupon")
 @Entity
 public class CouponEntity extends BaseEntity implements Calculable {

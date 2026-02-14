@@ -1,6 +1,6 @@
 package com.platform.order.common.dto.cursor;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
 

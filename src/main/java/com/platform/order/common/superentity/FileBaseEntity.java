@@ -1,6 +1,6 @@
 package com.platform.order.common.superentity;
 
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
